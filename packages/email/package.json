@@ -1,0 +1,19 @@
+{
+  "name": "@synccorehub/email",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./templates/*": "./src/templates/*.tsx"
+  },
+  "dependencies": {
+    "@react-email/components": "^0.0.35",
+    "react": "^19.0.0",
+    "resend": "^4.0.1"
+  },
+  "devDependencies": {
+    "@synccorehub/typescript-config": "workspace:*",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.2"
+  }
+}

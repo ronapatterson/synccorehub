@@ -1,0 +1,25 @@
+{
+  "name": "@synccorehub/worker",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@synccorehub/database": "workspace:*",
+    "@synccorehub/plugins": "workspace:*",
+    "@synccorehub/email": "workspace:*",
+    "bullmq": "^5.29.1",
+    "ioredis": "^5.4.1",
+    "date-fns": "^4.1.0"
+  },
+  "devDependencies": {
+    "@synccorehub/typescript-config": "workspace:*",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

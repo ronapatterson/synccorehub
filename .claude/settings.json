@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install -g pnpm@latest)",
+      "Bash(pnpm --version)",
+      "Bash(pnpm install)",
+      "Bash(curl -s https://registry.npmjs.org/@radix-ui%2Freact-badge)",
+      "Bash(pnpm --filter @synccorehub/database tsc --noEmit)",
+      "Read(//d/GitHub/synccorehub/$pkg/**)",
+      "Bash(done)",
+      "Bash(pnpm --filter @synccorehub/database typecheck)",
+      "Bash(echo \"EXIT_CODE: $?\")",
+      "Bash(../../node_modules/.bin/tsc --noEmit)",
+      "Bash(pnpm --filter @synccorehub/web typecheck)",
+      "Bash(pnpm --filter @synccorehub/portal typecheck)",
+      "Bash(pnpm --filter @synccorehub/worker typecheck)"
+    ],
+    "additionalDirectories": [
+      "d:\\GitHub\\synccorehub\\apps\\web\\app\\(dashboard)\\customers",
+      "d:\\GitHub\\synccorehub\\apps\\portal\\app\\(portal)\\projects"
+    ]
+  }
+}

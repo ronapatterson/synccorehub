@@ -1,0 +1,11 @@
+{
+  "name": "@synccorehub/typescript-config",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    "./base": "./base.json",
+    "./nextjs": "./nextjs.json",
+    "./react-library": "./react-library.json",
+    "./node": "./node.json"
+  }
+}

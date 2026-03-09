@@ -1,0 +1,28 @@
+{
+  "name": "@synccorehub/database",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts",
+    "./client": "./src/client.ts",
+    "./helpers/*": "./src/helpers/*.ts"
+  },
+  "scripts": {
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "studio": "drizzle-kit studio",
+    "seed": "tsx src/seed.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.38.3",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@synccorehub/typescript-config": "workspace:*",
+    "drizzle-kit": "^0.30.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
