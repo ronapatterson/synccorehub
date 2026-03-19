@@ -3,7 +3,7 @@
  * Delivers webhook events to registered endpoints with HMAC-SHA256 signing.
  * Retries with exponential backoff on failure.
  */
-import { Worker } from "bullmq";
+import { Worker, type ConnectionOptions } from "bullmq";
 import Redis from "ioredis";
 import { createHmac } from "crypto";
 import { db } from "@synccorehub/database/client";
@@ -13,7 +13,7 @@ import type { WebhookDeliveryJob } from "../queues";
 
 const connection = new Redis(process.env.REDIS_URL ?? "redis://localhost:6379", {
   maxRetriesPerRequest: null,
-});
+}) as unknown as ConnectionOptions;
 
 export const webhookDeliveryWorker = new Worker<WebhookDeliveryJob>(
   "webhook-delivery",

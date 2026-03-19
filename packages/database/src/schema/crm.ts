@@ -1,6 +1,5 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
-  boolean,
   doublePrecision,
   index,
   jsonb,
@@ -67,9 +66,7 @@ export const customers = pgTable(
     index("customers_company_idx").on(t.tenantId, t.company),
     index("customers_icp_score_idx").on(t.tenantId, t.icpScore),
     // Partial index — only non-deleted rows
-    index("customers_active_idx").on(t.tenantId).where(({ deletedAt }) =>
-      `${deletedAt} IS NULL`
-    ),
+    index("customers_active_idx").on(t.tenantId).where(sql`${t.deletedAt} IS NULL`),
   ]
 );
 

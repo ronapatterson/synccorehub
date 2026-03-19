@@ -70,7 +70,7 @@ export const segmentsRouter = router({
 
   removeMember: tenantProcedure
     .input(z.object({ segmentId: z.string().uuid(), customerId: z.string().uuid() }))
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       await db
         .delete(customerSegmentMembers)
         .where(and(eq(customerSegmentMembers.segmentId, input.segmentId), eq(customerSegmentMembers.customerId, input.customerId)));

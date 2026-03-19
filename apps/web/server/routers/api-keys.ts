@@ -4,7 +4,6 @@ import { router, tenantProcedure } from "../trpc";
 import { db } from "@synccorehub/database/client";
 import { apiKeys } from "@synccorehub/database/schema";
 import { createHmac, randomBytes } from "crypto";
-import { nanoid } from "nanoid";
 
 const AVAILABLE_SCOPES = [
   "customers:read", "customers:write",

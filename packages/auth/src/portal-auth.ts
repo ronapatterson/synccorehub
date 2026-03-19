@@ -5,7 +5,6 @@
  */
 import { betterAuth } from "better-auth";
 import { db } from "@synccorehub/database/client";
-import type { portalUsers, portalSessions } from "@synccorehub/database/schema";
 import { eq, and } from "drizzle-orm";
 
 // ── Custom Drizzle adapter for portal tables ───────────────────────────────

@@ -14,6 +14,7 @@ import { apiKeysRouter } from "./api-keys";
 import { tenantsRouter } from "./tenants";
 import { activitiesRouter } from "./activities";
 import { portalUsersRouter } from "./portal-users";
+import { callRoutingRouter } from "./call-routing";
 
 export const appRouter = router({
   customers: customersRouter,
@@ -31,6 +32,7 @@ export const appRouter = router({
   tenants: tenantsRouter,
   activities: activitiesRouter,
   portalUsers: portalUsersRouter,
+  callRouting: callRoutingRouter,
 });
 
 export type AppRouter = typeof appRouter;

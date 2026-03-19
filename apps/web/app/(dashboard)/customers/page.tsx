@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { Plus, Search, Filter } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Badge } from "@synccorehub/ui";
 import Link from "next/link";
 import { formatRelativeDate, getInitials } from "@/lib/utils";
@@ -17,8 +17,7 @@ export default function CustomersPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<string>("");
   const [page, setPage] = useState(1);
-  const [showForm, setShowForm] = useState(false);
-
+  const [, setShowForm] = useState(false);
   const { data, isLoading } = trpc.customers.list.useQuery({
     page,
     search: search || undefined,
@@ -93,7 +92,7 @@ export default function CustomersPage() {
                     <td className="py-3 px-4">
                       <Link href={`/customers/${customer.id}`} className="flex items-center gap-3 hover:text-primary">
                         <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-medium text-xs shrink-0">
-                          {getInitials(`${customer.firstName ?? ""} ${customer.lastName ?? ""}`.trim() || customer.email ?? "?")}
+                          {getInitials((`${customer.firstName ?? ""} ${customer.lastName ?? ""}`.trim() || customer.email) ?? "?")}
                         </div>
                         <div>
                           <p className="font-medium">{[customer.firstName, customer.lastName].filter(Boolean).join(" ") || "—"}</p>

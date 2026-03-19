@@ -11,8 +11,11 @@
     "./types": "./src/types.ts"
   },
   "dependencies": {
+    "@better-auth/drizzle-adapter": "^1.5.5",
     "@synccorehub/database": "workspace:*",
-    "better-auth": "^1.2.7"
+    "better-auth": "^1.2.7",
+    "drizzle-orm": "^0.38.4",
+    "nanoid": "^5.1.6"
   },
   "devDependencies": {
     "@synccorehub/typescript-config": "workspace:*",

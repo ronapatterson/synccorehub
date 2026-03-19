@@ -30,3 +30,4 @@ export * from "./templates/invite-portal-user";
 export * from "./templates/team-invitation";
 export * from "./templates/project-status-update";
 export * from "./templates/referral-reward";
+export * from "./templates/appointment-confirmation";

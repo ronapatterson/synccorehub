@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { and, asc, desc, eq, isNull, sql } from "drizzle-orm";
+import { and, asc, eq, isNull, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { router, tenantProcedure } from "../trpc";
 import { db } from "@synccorehub/database/client";
@@ -121,6 +121,7 @@ export const leadsRouter = router({
         .insert(leads)
         .values({
           ...input,
+          expectedCloseDate: input.expectedCloseDate ? new Date(input.expectedCloseDate) : undefined,
           tenantId: ctx.tenantId,
           ownerId: input.ownerId ?? ctx.userId,
           position: maxPos + 1000,

@@ -1,5 +1,4 @@
 import { Body, Button, Container, Head, Heading, Html, Preview, Section, Text, Hr } from "@react-email/components";
-import * as React from "react";
 
 type ReferralRewardEmailProps = {
   recipientName?: string;
@@ -11,14 +10,14 @@ type ReferralRewardEmailProps = {
 export function ReferralRewardEmail({ recipientName = "there", points, balance, portalUrl }: ReferralRewardEmailProps) {
   return (
     <Html><Head />
-      <Preview>You earned {points} reward points!</Preview>
+      <Preview>You earned {String(points)} reward points!</Preview>
       <Body style={main}>
         <Container style={container}>
           <Heading style={h1}>🎉 Reward earned!</Heading>
           <Text style={text}>Hi {recipientName},</Text>
           <Text style={text}>
-            Your referral was approved! You've earned <strong>{points} points</strong>.<br/>
-            Your new balance is <strong>{balance} points</strong>.
+            Your referral was approved! You've earned <strong>{String(points)} points</strong>.<br/>
+            Your new balance is <strong>{String(balance)} points</strong>.
           </Text>
           <Section style={btnSection}>
             <Button style={button} href={`${portalUrl}/referrals`}>View your rewards</Button>

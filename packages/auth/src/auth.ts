@@ -69,36 +69,25 @@ export const auth = betterAuth({
   plugins: [
     // Organization plugin — maps to "tenant" in our domain
     organization({
-      schema: {
-        organization: schema.organization,
-        member: schema.member,
-        invitation: schema.invitation,
-      },
       // Allowed roles within an organization
       allowedRoles: ["owner", "admin", "manager", "member", "viewer"],
       // Default role when invited
       defaultRole: "member",
       // Send invitation email
-      sendInvitationEmail: async ({ invitation, inviter, organization: org, url }) => {
-        console.log(
-          `[Auth] Invitation from ${inviter.name} to ${invitation.email} for org ${org.name}: ${url}`
-        );
+      sendInvitationEmail: async (data) => {
+        console.log(`[Auth] Invitation email sent`, data.invitation.email);
       },
       // After org is created, create the tenant record
       organizationCreation: {
-        afterCreate: async ({ organization: org, user }) => {
+        afterCreate: async (data: { organization: { name: string } }) => {
           // Link org to tenant — handled in apps/web onboarding flow
-          console.log(`[Auth] Org created: ${org.name} by ${user.email}`);
+          console.log(`[Auth] Org created: ${data.organization.name}`);
         },
       },
     }),
 
     // TOTP 2FA
-    twoFactor({
-      schema: {
-        twoFactor: schema.twoFactor,
-      },
-    }),
+    twoFactor(),
   ],
 
   // ── Secret ────────────────────────────────────────────────────────────

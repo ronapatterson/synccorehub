@@ -1,13 +1,12 @@
 import { and, count, eq, gte, isNull, sql, sum } from "drizzle-orm";
 import { router, tenantProcedure } from "../trpc";
 import { db } from "@synccorehub/database/client";
-import { customers, leads, projects, timeEntries } from "@synccorehub/database/schema";
+import { customers, leads, projects } from "@synccorehub/database/schema";
 import { subDays } from "date-fns";
 
 export const analyticsRouter = router({
   dashboardKpis: tenantProcedure.query(async ({ ctx }) => {
     const tenantId = ctx.tenantId;
-    const thirtyDaysAgo = subDays(new Date(), 30);
 
     const [
       [{ totalCustomers }],

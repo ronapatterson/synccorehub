@@ -1,5 +1,4 @@
 import { Body, Button, Container, Head, Heading, Html, Preview, Section, Text, Hr } from "@react-email/components";
-import * as React from "react";
 
 type ProjectStatusUpdateEmailProps = {
   customerName?: string;

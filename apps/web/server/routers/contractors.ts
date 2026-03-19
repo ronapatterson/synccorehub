@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { and, desc, eq, ilike, isNull, or, sql } from "drizzle-orm";
+import { and, desc, eq, ilike, isNull, or } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { router, tenantProcedure } from "../trpc";
 import { db } from "@synccorehub/database/client";

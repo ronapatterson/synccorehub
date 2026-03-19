@@ -4,7 +4,6 @@ import { trpc } from "@/lib/trpc";
 import { Plus, FolderKanban } from "lucide-react";
 import { Badge, Progress } from "@synccorehub/ui";
 import Link from "next/link";
-import { formatRelativeDate } from "@/lib/utils";
 
 const STATUS_BADGE: Record<string, "default" | "success" | "warning" | "secondary" | "info"> = {
   planning: "secondary",

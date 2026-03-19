@@ -4,9 +4,7 @@ import { TRPCError } from "@trpc/server";
 import { router, tenantProcedure } from "../trpc";
 import { db } from "@synccorehub/database/client";
 import { webhooks, webhookDeliveries } from "@synccorehub/database/schema";
-import { createWebhookSchema } from "@synccorehub/types";
 import { randomBytes } from "crypto";
-import { nanoid } from "nanoid";
 
 export const webhooksRouter = router({
   list: tenantProcedure.query(async ({ ctx }) => {

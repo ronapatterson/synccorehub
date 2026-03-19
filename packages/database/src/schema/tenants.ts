@@ -88,7 +88,7 @@ export const subscriptions = pgTable("subscriptions", {
 });
 
 // ── Relations ─────────────────────────────────────────────────────────────
-export const tenantsRelations = relations(tenants, ({ many, one }) => ({
+export const tenantsRelations = relations(tenants, ({ many }) => ({
   subscriptions: many(subscriptions),
 }));
 

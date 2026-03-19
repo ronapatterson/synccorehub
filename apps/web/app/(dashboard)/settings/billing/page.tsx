@@ -54,18 +54,18 @@ export default function BillingPage() {
 
         {subscription && (
           <div className="space-y-1 text-sm text-muted-foreground">
-            {subscription.currentPeriodStart && (
+            {subscription.subscription.currentPeriodStart && (
               <p>
-                Period: {new Date(subscription.currentPeriodStart).toLocaleDateString()} —{" "}
-                {subscription.currentPeriodEnd
-                  ? new Date(subscription.currentPeriodEnd).toLocaleDateString()
+                Period: {new Date(subscription.subscription.currentPeriodStart).toLocaleDateString()} —{" "}
+                {subscription.subscription.currentPeriodEnd
+                  ? new Date(subscription.subscription.currentPeriodEnd).toLocaleDateString()
                   : "ongoing"}
               </p>
             )}
             <p>
               Status:{" "}
-              <span className={`font-medium ${subscription.status === "active" ? "text-emerald-500" : "text-amber-500"}`}>
-                {subscription.status}
+              <span className={`font-medium ${subscription.subscription.status === "active" ? "text-emerald-500" : "text-amber-500"}`}>
+                {subscription.subscription.status}
               </span>
             </p>
           </div>

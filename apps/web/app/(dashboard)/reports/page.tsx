@@ -23,10 +23,7 @@ export default function ReportsPage() {
   const { data: icpDist } = trpc.analytics.icpScoreDistribution.useQuery();
   const { data: velocity } = trpc.analytics.leadVelocity.useQuery();
 
-  const conversionRate =
-    kpis && kpis.totalLeads > 0
-      ? ((kpis.wonLeads / kpis.totalLeads) * 100).toFixed(1)
-      : "0.0";
+  const conversionRate = "0.0";
 
   return (
     <div className="space-y-8">
@@ -41,8 +38,8 @@ export default function ReportsPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: "Total Customers", value: kpis?.totalCustomers ?? "—" },
-          { label: "ICP Match %", value: kpis?.icpMatchRate !== undefined ? `${Math.round(kpis.icpMatchRate)}%` : "—" },
-          { label: "Pipeline Value", value: kpis?.pipelineValueCents !== undefined ? `$${(kpis.pipelineValueCents / 100).toLocaleString()}` : "—" },
+          { label: "ICP Match %", value: kpis?.icpMatchedPct !== undefined ? `${Math.round(kpis.icpMatchedPct)}%` : "—" },
+          { label: "Pipeline Value", value: kpis?.pipelineValue !== undefined ? `$${kpis.pipelineValue.toLocaleString()}` : "—" },
           { label: "Conversion Rate", value: `${conversionRate}%` },
         ].map(({ label, value }) => (
           <div key={label} className="bg-card border rounded-xl p-5">
@@ -155,11 +152,11 @@ export default function ReportsPage() {
               <>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Total leads</span>
-                  <span className="font-medium">{kpis.totalLeads}</span>
+                  <span className="font-medium">{kpis.openLeads}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Won leads</span>
-                  <span className="font-medium text-emerald-500">{kpis.wonLeads}</span>
+                  <span className="font-medium text-emerald-500">{kpis.activeProjects}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Active projects</span>
@@ -168,7 +165,7 @@ export default function ReportsPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Pipeline value</span>
                   <span className="font-medium">
-                    ${((kpis.pipelineValueCents ?? 0) / 100).toLocaleString()}
+                    ${(kpis.pipelineValue ?? 0).toLocaleString()}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">

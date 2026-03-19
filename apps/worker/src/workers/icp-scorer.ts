@@ -3,10 +3,10 @@
  * Recomputes icpScore for all customers in a tenant against a given ICP profile.
  * Each criterion contributes points if it matches the customer's field value.
  */
-import { Worker } from "bullmq";
+import { Worker, type ConnectionOptions } from "bullmq";
 import Redis from "ioredis";
 import { db } from "@synccorehub/database/client";
-import { customers, icpCriteria, icpProfiles } from "@synccorehub/database/schema";
+import { customers, icpCriteria } from "@synccorehub/database/schema";
 import { and, eq, isNull } from "drizzle-orm";
 import type { IcpScoringJob } from "../queues";
 
@@ -48,7 +48,7 @@ function evaluateCriterion(criterion: Criterion, customer: Customer): number {
 
 const connection = new Redis(process.env.REDIS_URL ?? "redis://localhost:6379", {
   maxRetriesPerRequest: null,
-});
+}) as unknown as ConnectionOptions;
 
 export const icpScorerWorker = new Worker<IcpScoringJob>(
   "icp-scoring",

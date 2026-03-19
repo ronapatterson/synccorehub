@@ -59,7 +59,7 @@ export default function ContractorDetailPage() {
 
   const totalBillableHours =
     timeEntries
-      ?.filter((e) => e.billable && e.status === "approved")
+      ?.filter((e) => e.isBillable && e.status === "approved")
       .reduce((sum, e) => {
         if (!e.startedAt || !e.endedAt) return sum;
         const hours =
@@ -254,7 +254,7 @@ export default function ContractorDetailPage() {
                         ? formatRelativeDate(new Date(entry.startedAt))
                         : "—"}{" "}
                       {hours !== null && `· ${hours} hrs`}
-                      {entry.billable ? " · Billable" : " · Non-billable"}
+                      {entry.isBillable ? " · Billable" : " · Non-billable"}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">

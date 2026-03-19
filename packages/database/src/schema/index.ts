@@ -36,3 +36,6 @@ export * from "./plugins";
 
 // ── API Keys & Webhooks ───────────────────────────────────────────────────
 export * from "./api";
+
+// ── Smart Call Routing ────────────────────────────────────────────────────
+export * from "./call-routing";

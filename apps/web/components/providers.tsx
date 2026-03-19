@@ -22,8 +22,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
             staleTime: 30 * 1000, // 30s
             retry: (failureCount, error) => {
               // Don't retry on 4xx errors
-              if (error instanceof Error && "data" in (error as Record<string, unknown>)) {
-                const code = (error as Record<string, { httpStatus?: number }>).data?.httpStatus;
+              if (error instanceof Error && "data" in (error as unknown as Record<string, unknown>)) {
+                const code = (error as unknown as Record<string, { httpStatus?: number }>).data?.httpStatus;
                 if (code && code >= 400 && code < 500) return false;
               }
               return failureCount < 2;

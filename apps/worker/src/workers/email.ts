@@ -6,7 +6,7 @@ import {
   TeamInvitationEmail,
   ProjectStatusUpdateEmail,
   ReferralRewardEmail,
-} from "@synccorehub/email/templates";
+} from "@synccorehub/email";
 import * as React from "react";
 
 export interface EmailJobData {
@@ -51,12 +51,6 @@ export function createEmailWorker() {
     {
       connection,
       concurrency: 5,
-      defaultJobOptions: {
-        attempts: 3,
-        backoff: { type: "exponential", delay: 5_000 },
-        removeOnComplete: { count: 500 },
-        removeOnFail: { count: 200 },
-      },
     },
   );
 

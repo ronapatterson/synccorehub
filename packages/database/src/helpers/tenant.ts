@@ -1,5 +1,5 @@
 import { eq, and, isNull, type SQL } from "drizzle-orm";
-import type { PgColumn, PgTableWithColumns } from "drizzle-orm/pg-core";
+import type { PgColumn } from "drizzle-orm/pg-core";
 
 /**
  * Returns a WHERE clause that combines tenant_id filtering with soft-delete filtering.

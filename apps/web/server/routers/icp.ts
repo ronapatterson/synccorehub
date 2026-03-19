@@ -91,6 +91,7 @@ export const icpRouter = router({
         await db.insert(icpCriteria).values(
           input.criteria.map((c) => ({
             ...c,
+            value: c.value ?? null,
             profileId: input.profileId,
             tenantId: ctx.tenantId,
           }))

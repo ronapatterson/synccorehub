@@ -13,9 +13,7 @@ export async function POST(request: NextRequest) {
   const parsed = bodySchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
 
-  // Portal tenant from host header
-  const host = request.headers.get("host") ?? "";
-  // TODO: resolve tenantId from custom domain or subdomain
+  // TODO: resolve tenantId from custom domain or subdomain (request.headers.get("host"))
   // For now, look up by email across all tenants (demo mode)
   const [portalUser] = await db
     .select()

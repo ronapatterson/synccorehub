@@ -6,14 +6,26 @@ import "dotenv/config";
 import { icpScorerWorker } from "./workers/icp-scorer";
 import { webhookDeliveryWorker } from "./workers/webhook-delivery";
 import { createEmailWorker } from "./workers/email";
+import { createCallRoutingSmsWorker } from "./workers/call-routing-sms";
+import { createAppointmentConfirmationWorker } from "./workers/appointment-confirmation";
 
 const emailWorker = createEmailWorker();
-const workers = [icpScorerWorker, webhookDeliveryWorker, emailWorker];
+const callRoutingSmsWorker = createCallRoutingSmsWorker();
+const appointmentConfirmationWorker = createAppointmentConfirmationWorker();
+const workers = [
+  icpScorerWorker,
+  webhookDeliveryWorker,
+  emailWorker,
+  callRoutingSmsWorker,
+  appointmentConfirmationWorker,
+];
 
 console.log("SyncCoreHub Worker started");
 console.log("  ICP Scorer worker: active");
 console.log("  Webhook Delivery worker: active");
 console.log("  Email worker: active");
+console.log("  Call Routing SMS worker: active");
+console.log("  Appointment Confirmation worker: active");
 
 // Graceful shutdown
 async function shutdown() {

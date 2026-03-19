@@ -1,7 +1,6 @@
 import {
   Body, Button, Container, Head, Heading, Html, Preview, Section, Text, Hr, Link,
 } from "@react-email/components";
-import * as React from "react";
 
 type TeamInvitationEmailProps = {
   inviteeName?: string;

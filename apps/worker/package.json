@@ -10,15 +10,20 @@
   },
   "dependencies": {
     "@synccorehub/database": "workspace:*",
-    "@synccorehub/plugins": "workspace:*",
     "@synccorehub/email": "workspace:*",
+    "@synccorehub/plugins": "workspace:*",
     "bullmq": "^5.29.1",
+    "date-fns": "^4.1.0",
+    "googleapis": "^171.4.0",
     "ioredis": "^5.4.1",
-    "date-fns": "^4.1.0"
+    "twilio": "^5.13.0"
   },
   "devDependencies": {
     "@synccorehub/typescript-config": "workspace:*",
     "@types/node": "^22.10.2",
+    "@types/react": "^19.2.14",
+    "drizzle-orm": "^0.38.4",
+    "react": "^19.2.4",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   }

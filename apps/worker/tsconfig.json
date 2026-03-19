@@ -1,6 +1,6 @@
 {
   "extends": "@synccorehub/typescript-config/node.json",
-  "compilerOptions": { "outDir": "dist", "rootDir": "src" },
+  "compilerOptions": { "outDir": "dist", "rootDir": "src", "jsx": "react-jsx" },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

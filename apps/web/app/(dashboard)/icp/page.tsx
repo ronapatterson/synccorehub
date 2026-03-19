@@ -3,7 +3,7 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Plus, Target, Trash2, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { icpCriterionSchema } from "@synccorehub/types";
@@ -42,17 +42,17 @@ export default function IcpPage() {
     onSuccess: () => toast.success("Criteria saved! Rescoring will run in the background."),
   });
 
-  const { register, control, handleSubmit, reset } = useForm<CriteriaForm>({
+  const { register, control, handleSubmit } = useForm<CriteriaForm>({
     resolver: zodResolver(criteriaFormSchema),
-    defaultValues: { criteria: profileData?.criteria ?? [] },
+    defaultValues: { criteria: profileData?.criteria?.map((c) => ({ ...c, isActive: c.isActive ?? undefined })) as CriteriaForm["criteria"] ?? [] },
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: "criteria" });
 
-  function onSave(data: CriteriaForm) {
+  const onSave: SubmitHandler<CriteriaForm> = (data) => {
     if (!selectedProfileId) return;
     saveCriteria.mutate({ profileId: selectedProfileId, criteria: data.criteria });
-  }
+  };
 
   return (
     <div className="space-y-6">

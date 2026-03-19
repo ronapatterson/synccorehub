@@ -24,7 +24,7 @@ export default async function PortalServicesPage() {
 
   const productsByType = availableProducts.reduce(
     (acc, product) => {
-      const key = product.productType;
+      const key = product.type;
       if (!acc[key]) acc[key] = [];
       acc[key].push(product);
       return acc;
@@ -75,7 +75,7 @@ export default async function PortalServicesPage() {
                       <div>
                         <p className="font-medium text-sm">{product.name}</p>
                         <Badge variant="secondary" className="text-xs capitalize mt-0.5">
-                          {TYPE_LABELS[product.productType] ?? product.productType}
+                          {TYPE_LABELS[product.type] ?? product.type}
                         </Badge>
                       </div>
                     </div>
@@ -84,7 +84,7 @@ export default async function PortalServicesPage() {
                         {product.priceCents === 0
                           ? "Free"
                           : `$${(product.priceCents / 100).toFixed(2)}`}
-                        {product.productType === "subscription" && (
+                        {product.type === "subscription" && (
                           <span className="text-xs text-muted-foreground font-normal">/mo</span>
                         )}
                       </p>

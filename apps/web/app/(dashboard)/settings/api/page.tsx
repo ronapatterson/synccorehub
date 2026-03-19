@@ -176,14 +176,14 @@ export default function ApiKeysPage() {
                     </p>
                   )}
                 </div>
-                <Badge variant={key.revokedAt ? "destructive" : "success"} className="text-xs">
-                  {key.revokedAt ? "Revoked" : "Active"}
+                <Badge variant={key.status === "revoked" ? "destructive" : "success"} className="text-xs">
+                  {key.status === "revoked" ? "Revoked" : "Active"}
                 </Badge>
-                {!key.revokedAt && (
+                {key.status !== "revoked" && (
                   <button
                     onClick={() => {
                       if (confirm("Revoke this API key? This cannot be undone.")) {
-                        revokeKey.mutate({ keyId: key.id });
+                        revokeKey.mutate({ id: key.id });
                       }
                     }}
                     className="text-muted-foreground hover:text-destructive"

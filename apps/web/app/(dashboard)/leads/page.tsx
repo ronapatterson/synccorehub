@@ -1,10 +1,8 @@
 "use client";
-import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Plus, Trophy, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { formatCents } from "@/lib/utils";
-import { Badge } from "@synccorehub/ui";
 
 export default function LeadsPage() {
   const { data: pipelines, isLoading } = trpc.leads.pipelinesWithLeads.useQuery();
@@ -12,7 +10,7 @@ export default function LeadsPage() {
   const markLost = trpc.leads.markLost.useMutation({ onSuccess: () => toast.error("Lead marked as lost") });
   const utils = trpc.useUtils();
 
-  const moveToStage = trpc.leads.moveToStage.useMutation({
+  trpc.leads.moveToStage.useMutation({
     onSuccess: () => utils.leads.pipelinesWithLeads.invalidate(),
   });
 

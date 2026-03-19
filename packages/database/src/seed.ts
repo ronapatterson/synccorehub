@@ -5,11 +5,14 @@
 import { db } from "./client";
 import { plans, plugins } from "./schema";
 
+type PlanInsert = typeof plans.$inferInsert;
+type PluginInsert = typeof plugins.$inferInsert;
+
 async function main() {
   console.log("🌱 Seeding database...");
 
   // ── Plans ──────────────────────────────────────────────────────────────
-  await db.insert(plans).values([
+  const planData: PlanInsert[] = [
     {
       name: "Free",
       tier: "free",
@@ -80,10 +83,11 @@ async function main() {
       ],
       isActive: true,
     },
-  ]).onConflictDoNothing();
+  ];
+  await db.insert(plans).values(planData).onConflictDoNothing();
 
   // ── Sample Plugins ─────────────────────────────────────────────────────
-  await db.insert(plugins).values([
+  const pluginData: PluginInsert[] = [
     {
       slug: "slack-notifications",
       name: "Slack Notifications",
@@ -150,7 +154,43 @@ async function main() {
         },
       },
     },
-  ]).onConflictDoNothing();
+    {
+      slug: "smart-call-routing",
+      name: "Smart Call Routing",
+      description: "Route missed calls to an IVR that collects caller info and sends a scheduling link via SMS.",
+      longDescription: "Assign a Twilio virtual number to any team member. When a call goes unanswered, an IVR collects the caller's name and callback number, then sends an SMS with a token-gated scheduling link. Slots are auto-computed from the recipient's availability and synced with Google Calendar or Microsoft Outlook to avoid double-booking.",
+      version: "1.0.0",
+      author: "SyncCoreHub",
+      isOfficial: true,
+      isFeatured: true,
+      isFree: false,
+      priceCents: "2900",
+      category: "communication",
+      tags: ["twilio", "phone", "scheduling", "calendar", "ivr", "sms"],
+      requiredScopes: ["customers:write"],
+      manifest: {
+        id: "smart-call-routing",
+        version: "1.0.0",
+        apiVersion: "1.0",
+        hooks: ["call:missed", "call:scheduled"],
+        routes: [{ path: "/settings/call-routing", label: "Call Routing", icon: "PhoneForwarded" }],
+        configSchema: {
+          twilioAccountSid: { type: "string", label: "Twilio Account SID", required: true, secret: true, placeholder: "ACxxxxxxxx" },
+          twilioAuthToken: { type: "string", label: "Twilio Auth Token", required: true, secret: true },
+          twilioMessagingServiceSid: { type: "string", label: "Twilio Messaging Service SID", required: false, secret: false },
+          googleClientId: { type: "string", label: "Google OAuth Client ID", required: false, secret: false },
+          googleClientSecret: { type: "string", label: "Google OAuth Client Secret", required: false, secret: true },
+          microsoftClientId: { type: "string", label: "Microsoft OAuth Client ID", required: false, secret: false },
+          microsoftClientSecret: { type: "string", label: "Microsoft OAuth Client Secret", required: false, secret: true },
+          microsoftTenantId: { type: "string", label: "Microsoft Tenant ID", required: false, secret: false, placeholder: "common" },
+          schedulingPageBaseUrl: { type: "url", label: "App Base URL", required: true, secret: false },
+          schedulingLinkTtlHours: { type: "number", label: "Scheduling Link Expiry (hours)", required: false, secret: false, placeholder: "48" },
+          ivrWelcomeMessage: { type: "string", label: "IVR Welcome Message", required: false, secret: false },
+        },
+      },
+    },
+  ];
+  await db.insert(plugins).values(pluginData).onConflictDoNothing();
 
   console.log("✅ Seed complete!");
   process.exit(0);

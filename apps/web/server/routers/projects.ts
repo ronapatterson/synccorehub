@@ -3,7 +3,7 @@ import { and, asc, desc, eq, isNull, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { router, tenantProcedure } from "../trpc";
 import { db } from "@synccorehub/database/client";
-import { projects, milestones, tasks, taskAssignments, taskComments } from "@synccorehub/database/schema";
+import { projects, milestones, tasks } from "@synccorehub/database/schema";
 import { createProjectSchema } from "@synccorehub/types";
 import { eventBus } from "@synccorehub/plugins/hooks";
 
@@ -76,7 +76,13 @@ export const projectsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const [project] = await db
         .insert(projects)
-        .values({ ...input, tenantId: ctx.tenantId, ownerId: ctx.userId })
+        .values({
+          ...input,
+          startDate: input.startDate ? new Date(input.startDate) : undefined,
+          dueDate: input.dueDate ? new Date(input.dueDate) : undefined,
+          tenantId: ctx.tenantId,
+          ownerId: ctx.userId,
+        })
         .returning();
 
       return project!;
@@ -158,7 +164,12 @@ export const projectsRouter = router({
 
       const [task] = await db
         .insert(tasks)
-        .values({ ...input, tenantId: ctx.tenantId, position: maxPos + 1000 })
+        .values({
+          ...input,
+          dueDate: input.dueDate ? new Date(input.dueDate) : undefined,
+          tenantId: ctx.tenantId,
+          position: maxPos + 1000,
+        })
         .returning();
 
       return task!;

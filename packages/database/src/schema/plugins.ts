@@ -67,8 +67,8 @@ export type PluginManifest = {
   version: string;
   apiVersion: string;
   hooks?: string[]; // Hook event IDs this plugin subscribes to
-  routes?: Array<{ path: string; label: string }>; // UI routes plugin adds
-  configSchema?: Record<string, { type: string; label: string; required?: boolean; secret?: boolean }>;
+  routes?: Array<{ path: string; label: string; icon?: string }>; // UI routes plugin adds
+  configSchema?: Record<string, { type: string; label: string; required?: boolean; secret?: boolean; placeholder?: string }>;
 };
 
 // ── Installed Plugins ──────────────────────────────────────────────────────

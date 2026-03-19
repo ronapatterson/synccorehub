@@ -12,7 +12,7 @@ export default function InstalledPluginsPage() {
   const { data: installed, refetch } = trpc.plugins.listInstalled.useQuery();
   const setStatus = trpc.plugins.setStatus.useMutation({
     onSuccess: (_, vars) => {
-      toast.success(`Plugin ${vars.enabled ? "enabled" : "disabled"}`);
+      toast.success(`Plugin ${vars.status === "active" ? "enabled" : "disabled"}`);
       refetch();
     },
   });
@@ -20,11 +20,6 @@ export default function InstalledPluginsPage() {
     onSuccess: () => { toast.success("Config saved"); refetch(); },
     onError: (err) => toast.error(err.message),
   });
-  const getConfig = trpc.plugins.getConfig.useQuery(
-    { installedPluginId: expandedId! },
-    { enabled: !!expandedId },
-  );
-
   function handleConfigChange(pluginId: string, key: string, value: string) {
     setConfigValues((prev) => ({
       ...prev,
@@ -50,22 +45,23 @@ export default function InstalledPluginsPage() {
       ) : (
         <div className="space-y-3">
           {installed.map((ip) => {
-            const isExpanded = expandedId === ip.id;
+            const isExpanded = expandedId === ip.installed.id;
             const manifest = ip.plugin?.manifest as Record<string, unknown> | null;
             const configSchema = (manifest?.configSchema as { key: string; label: string; type: string; secret?: boolean; required?: boolean }[]) ?? [];
-            const currentConfig = configValues[ip.id] ?? {};
+            const currentConfig = configValues[ip.installed.id] ?? {};
+            const isEnabled = ip.installed.status === "active";
 
             return (
-              <div key={ip.id} className="bg-card border rounded-xl overflow-hidden">
+              <div key={ip.installed.id} className="bg-card border rounded-xl overflow-hidden">
                 <div className="flex items-center gap-4 p-4">
                   <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <Settings2 className="h-5 w-5 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="font-medium">{ip.plugin?.name ?? ip.pluginId}</p>
-                      <Badge variant={ip.enabled ? "success" : "secondary"} className="text-xs">
-                        {ip.enabled ? "Enabled" : "Disabled"}
+                      <p className="font-medium">{ip.plugin?.name ?? ip.installed.pluginId}</p>
+                      <Badge variant={isEnabled ? "success" : "secondary"} className="text-xs">
+                        {isEnabled ? "Enabled" : "Disabled"}
                       </Badge>
                     </div>
                     <p className="text-xs text-muted-foreground">
@@ -77,7 +73,7 @@ export default function InstalledPluginsPage() {
                     {configSchema.length > 0 && (
                       <button
                         onClick={() => {
-                          setExpandedId(isExpanded ? null : ip.id);
+                          setExpandedId(isExpanded ? null : ip.installed.id);
                         }}
                         className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
                         title="Configure"
@@ -90,11 +86,11 @@ export default function InstalledPluginsPage() {
                       </button>
                     )}
                     <button
-                      onClick={() => setStatus.mutate({ installedPluginId: ip.id, enabled: !ip.enabled })}
-                      className={`p-1.5 rounded-lg transition-colors ${ip.enabled ? "text-emerald-500 hover:bg-emerald-50" : "text-muted-foreground hover:bg-muted"}`}
-                      title={ip.enabled ? "Disable" : "Enable"}
+                      onClick={() => setStatus.mutate({ installedPluginId: ip.installed.id, status: isEnabled ? "disabled" : "active" })}
+                      className={`p-1.5 rounded-lg transition-colors ${isEnabled ? "text-emerald-500 hover:bg-emerald-50" : "text-muted-foreground hover:bg-muted"}`}
+                      title={isEnabled ? "Disable" : "Enable"}
                     >
-                      {ip.enabled ? <Power className="h-4 w-4" /> : <PowerOff className="h-4 w-4" />}
+                      {isEnabled ? <Power className="h-4 w-4" /> : <PowerOff className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
@@ -113,7 +109,7 @@ export default function InstalledPluginsPage() {
                           type={field.secret ? "password" : field.type === "number" ? "number" : "text"}
                           placeholder={field.secret ? "••••••••" : `Enter ${field.label.toLowerCase()}`}
                           value={currentConfig[field.key] ?? ""}
-                          onChange={(e) => handleConfigChange(ip.id, field.key, e.target.value)}
+                          onChange={(e) => handleConfigChange(ip.installed.id, field.key, e.target.value)}
                           className="w-full border border-input rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring"
                         />
                         {field.secret && (
@@ -127,8 +123,8 @@ export default function InstalledPluginsPage() {
                       <button
                         onClick={() =>
                           saveConfig.mutate({
-                            installedPluginId: ip.id,
-                            config: configSchema.map((f) => ({
+                            installedPluginId: ip.installed.id,
+                            entries: configSchema.map((f) => ({
                               key: f.key,
                               value: currentConfig[f.key] ?? "",
                               isSecret: f.secret ?? false,

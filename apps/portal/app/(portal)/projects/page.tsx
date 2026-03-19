@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { db } from "@synccorehub/database/client";
-import { projects, portalUsers, projectPortalAccess, customers, milestones } from "@synccorehub/database/schema";
-import { and, eq, isNull, inArray } from "drizzle-orm";
+import { projects, portalUsers, projectPortalAccess } from "@synccorehub/database/schema";
+import { and, eq, isNull } from "drizzle-orm";
 import { Progress, Badge } from "@synccorehub/ui";
 import Link from "next/link";
 import { FolderKanban } from "lucide-react";
@@ -32,12 +32,10 @@ export default async function PortalProjectsPage() {
     ? eq(projects.customerId, portalUser.customerId)
     : undefined;
 
-  let allProjects;
+  let allProjects: (typeof projects.$inferSelect)[] = [];
   if (grantedProjectIds.length > 0 && customerCondition) {
     allProjects = await db.select().from(projects)
-      .where(and(...conditions))
-      // Note: Drizzle doesn't have OR shorthand — using raw SQL for OR
-      .where(and(eq(projects.tenantId, tenantId), eq(projects.visibleInPortal, true)));
+      .where(and(...conditions));
   } else {
     allProjects = await db.select().from(projects)
       .where(and(...conditions, ...(customerCondition ? [customerCondition] : [])));

@@ -32,7 +32,10 @@ export type HookEvent =
   | "plugin:installed"
   | "plugin:uninstalled"
   // Webhooks (internal)
-  | "webhook:delivery-failed";
+  | "webhook:delivery-failed"
+  // Smart Call Routing
+  | "call:missed"
+  | "call:scheduled";
 
 // ── Payloads for each hook ────────────────────────────────────────────────
 export type HookPayloads = {
@@ -58,6 +61,21 @@ export type HookPayloads = {
   "plugin:installed": { tenantId: string; pluginSlug: string };
   "plugin:uninstalled": { tenantId: string; pluginSlug: string };
   "webhook:delivery-failed": { tenantId: string; webhookId: string; deliveryId: string; event: string };
+  "call:missed": {
+    tenantId: string;
+    callSid: string;
+    fromNumber: string;
+    virtualNumberId: string;
+    timestamp: string; // ISO
+  };
+  "call:scheduled": {
+    tenantId: string;
+    callSid: string;
+    appointmentId: string;
+    schedulingSessionId: string;
+    scheduledAt: string; // ISO
+    recipientUserId: string;
+  };
 };
 
 // ── Hook handler type ─────────────────────────────────────────────────────
@@ -75,8 +93,7 @@ class EventBus {
 
   on<E extends HookEvent>(event: E, handler: HookHandler<E>): () => void {
     if (!this.handlers[event]) {
-      // @ts-expect-error - dynamic key assignment
-      this.handlers[event] = [];
+      (this.handlers as Record<string, unknown[]>)[event] = [];
     }
     (this.handlers[event] as Array<HookHandler<E>>).push(handler);
 

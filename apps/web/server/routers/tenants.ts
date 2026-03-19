@@ -13,8 +13,7 @@ import {
   invitation,
   user,
 } from "@synccorehub/database/schema";
-import { sendEmail } from "@synccorehub/email";
-import { TeamInvitationEmail } from "@synccorehub/email/templates";
+import { sendEmail, TeamInvitationEmail } from "@synccorehub/email";
 import * as React from "react";
 
 export const tenantsRouter = router({
@@ -144,7 +143,8 @@ export const tenantsRouter = router({
           subject: `You've been invited to join ${org.name}`,
           react: React.createElement(TeamInvitationEmail, {
             inviterName: inviter?.name ?? "A team member",
-            organizationName: org.name,
+            orgName: org.name,
+            role: input.role,
             inviteUrl: `${process.env.APP_URL}/accept-invitation?token=${inv!.id}`,
           }),
         });
